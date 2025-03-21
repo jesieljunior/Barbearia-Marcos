@@ -4,6 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BarberShop - Agendamento Online</title>
+    <script src="https://www.gstatic.com/firebasejs/10.x.x/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.x.x/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.x.x/firebase-auth.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "seu-api-key",
+            authDomain: "seu-projeto.firebaseapp.com",
+            projectId: "seu-projeto",
+            storageBucket: "seu-projeto.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abcdef123456"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+    
+    </script>
     <style>
         * {
             margin: 0;
@@ -679,36 +696,37 @@
         // Confirmar agendamento
         function confirmBooking() {
             const booking = window.tempBooking;
-            
-            if (!booking) return;
-            
-            const appointments = JSON.parse(localStorage.getItem('appointments'));
-            
-            // Adicionar ID único e status
-            const newAppointment = {
+
+            if (!booking) {
+                alert("Erro: Nenhum agendamento foi encontrado para confirmar.");
+                return;
+            }
+
+            // Adicionar ao Firestore em vez de localStorage
+            db.collection("appointments").add({
                 ...booking,
-                id: Date.now().toString(),
-                cancelled: false,
-                timestamp: new Date().toISOString()
-            };
-            
-            appointments.push(newAppointment);
-            localStorage.setItem('appointments', JSON.stringify(appointments));
-            
-            // Limpar formulário
-            document.getElementById('name').value = '';
-            document.getElementById('phone').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('service').value = '';
-            document.getElementById('date').value = '';
-            document.getElementById('time').value = '';
-            
-            // Exibir mensagem de sucesso
-            document.getElementById('booking-error').style.display = 'none';
-            document.getElementById('booking-success').style.display = 'block';
-            
-            // Fechar modal
-            closeModal();
+                timestamp: new Date(),
+                cancelled: false
+            })
+            .then(() => {
+                // Limpar formulário e mostrar mensagem de sucesso
+                document.getElementById('name').value = '';
+                document.getElementById('phone').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('service').value = '';
+                document.getElementById('date').value = '';
+                document.getElementById('time').value = '';
+
+                document.getElementById('booking-error').style.display = 'none';
+                document.getElementById('booking-success').style.display = 'block';
+
+                closeModal();
+            })
+            .catch(error => {
+                console.error("Erro ao salvar agendamento: ", error);
+                document.getElementById('booking-error').textContent = "Erro ao salvar. Tente novamente.";
+                document.getElementById('booking-error').style.display = 'block';
+            });
         }
         
         // Fechar modal
@@ -724,22 +742,22 @@
             const password = document.getElementById('barber-password').value;
             const errorMessage = document.getElementById('login-error');
             
-            const barbers = JSON.parse(localStorage.getItem('barbers'));
-            const barber = barbers.find(b => b.username === username && b.password === password);
-            
-            if (barber) {
-                document.getElementById('login-area').style.display = 'none';
-                document.getElementById('barber-panel').style.display = 'block';
-                errorMessage.style.display = 'none';
-                
-                // Armazenar barbeiro logado na sessão
-                sessionStorage.setItem('loggedBarber', JSON.stringify(barber));
-                
-                // Carregar agendamentos
-                loadAppointments();
-            } else {
-                errorMessage.style.display = 'block';
-            }
+            // Usando autenticação do Firebase
+            auth.signInWithEmailAndPassword(username, password)
+                .then((userCredential) => {
+                    // Login bem-sucedido
+                    document.getElementById('login-area').style.display = 'none';
+                    document.getElementById('barber-panel').style.display = 'block';
+                    errorMessage.style.display = 'none';
+                    
+                    // Carregar agendamentos
+                    loadAppointments();
+                })
+                .catch((error) => {
+                    // Erro de login
+                    errorMessage.style.display = 'block';
+                    console.error("Erro de login:", error);
+                });
         }
         
         // Logout do barbeiro
@@ -756,56 +774,59 @@
         // Carregar agendamentos
         function loadAppointments() {
             const appointmentsList = document.getElementById('appointments-list');
-            const appointments = JSON.parse(localStorage.getItem('appointments'));
-            
-            // Filtrar agendamentos ativos e ordenar por data e hora
-            const activeAppointments = appointments
-                .filter(app => !app.cancelled)
-                .sort((a, b) => {
-                    const dateA = new Date(`${a.date}T${a.time}`);
-                    const dateB = new Date(`${b.date}T${b.time}`);
-                    return dateA - dateB;
-                });
-            
+
             // Limpar lista
             appointmentsList.innerHTML = '';
-            
-            if (activeAppointments.length === 0) {
-                appointmentsList.innerHTML = '<div class="appointment-item">Nenhum agendamento encontrado.</div>';
-                return;
-            }
-            
-            // Adicionar cada agendamento à lista
-            activeAppointments.forEach(app => {
-                const appointmentItem = document.createElement('div');
-                appointmentItem.className = 'appointment-item';
-                appointmentItem.innerHTML = `
-                    <div class="appointment-info">
-                        <strong>${app.name}</strong> - ${app.phone}<br>
-                        <strong>Serviço:</strong> ${app.service}<br>
-                        <strong>Data:</strong> ${formatDate(app.date)} às ${app.time}
-                    </div>
-                    <div class="appointment-actions">
-                        <button onclick="cancelAppointment('${app.id}')">Cancelar</button>
-                    </div>
-                `;
-                appointmentsList.appendChild(appointmentItem);
-            });
+
+            // Buscar do Firestore em vez do localStorage
+            db.collection("appointments")
+                .where("cancelled", "==", false)
+                .orderBy("date")
+                .orderBy("time")
+                .get()
+                .then((querySnapshot) => {
+                    if (querySnapshot.empty) {
+                        appointmentsList.innerHTML = '<div class="appointment-item">Nenhum agendamento encontrado.</div>';
+                        return;
+                    }
+
+                    querySnapshot.forEach((doc) => {
+                        const app = doc.data();
+                        const appointmentItem = document.createElement('div');
+                        appointmentItem.className = 'appointment-item';
+                        appointmentItem.innerHTML = `
+                            <div class="appointment-info">
+                                <strong>${app.name}</strong> - ${app.phone}<br>
+                                <strong>Serviço:</strong> ${app.service}<br>
+                                <strong>Data:</strong> ${formatDate(app.date)} às ${app.time}
+                            </div>
+                            <div class="appointment-actions">
+                                <button onclick="cancelAppointment('${doc.id}')">Cancelar</button>
+                            </div>
+                        `;
+                        appointmentsList.appendChild(appointmentItem);
+                    });
+                })
+                .catch((error) => {
+                    console.error("Erro ao carregar agendamentos: ", error);
+                    appointmentsList.innerHTML = '<div class="appointment-item">Erro ao carregar agendamentos.</div>';
+                });
         }
         
         // Cancelar agendamento
         function cancelAppointment(id) {
             if (confirm('Tem certeza que deseja cancelar este agendamento?')) {
-                const appointments = JSON.parse(localStorage.getItem('appointments'));
-                const updatedAppointments = appointments.map(app => {
-                    if (app.id === id) {
-                        return { ...app, cancelled: true };
-                    }
-                    return app;
+                // Atualizar no Firestore
+                db.collection("appointments").doc(id).update({
+                    cancelled: true
+                })
+                .then(() => {
+                    loadAppointments();
+                })
+                .catch((error) => {
+                    console.error("Erro ao cancelar agendamento: ", error);
+                    alert("Erro ao cancelar. Tente novamente.");
                 });
-                
-                localStorage.setItem('appointments', JSON.stringify(updatedAppointments));
-                loadAppointments();
             }
         }
         
