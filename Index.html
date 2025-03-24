@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maciel's barber studio - Agendamento Online</title>
+</head>
+<body>
+    <div class="main-content">
+        <!-- Header com navegação -->
+        <header>
+            <div class="container">
+                <nav>
+                    <div class="logo">BarberShop</div>
+                    <div class="nav-links">
+                        <a href="#" onclick="showPage('home')">Início</a>
+                        <a href="#" onclick="showPage('booking')">Agendar</a>
+                        <a href="#" onclick="showPage('barber')">Área do Barbeiro</a>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Página inicial -->
+        <div id="home" class="page active">
+            <!-- Seção Hero -->
+            <section class="hero">
+                <div class="container">
+                    <h1>Estilo & Elegância</h1>
+                    <p>Experiência premium em cuidados masculinos. Agende seu horário hoje e descubra a diferença.</p>
+                    <a href="#" class="btn" onclick="showPage('booking')">Agendar Agora</a>
+                </div>
+            </section>
+
+            <!-- Seção de Serviços -->
+            <section class="services">
+                <div class="container">
+                    <h2>Nossos Serviços</h2>
+                    <div class="services-grid">
+                        <div class="service-card">
+                            <div class="service-img" style="background-image: url('./images/corte.jpg')"></div>
+                            <div class="service-info">
+                                <h3>Corte Tradicional</h3>
+                                <p>Corte clássico com acabamento perfeito.</p>
+                                <div class="price">R$ 40,00</div>
+                            </div>
+                        </div>
+                        
+                        <div class="service-card">
+                            <div class="service-img" style="background-image: url('./images/barba.jpg')"></div>
+                            <div class="service-info">
+                                <h3>Barba Completa</h3>
+                                <p>Modelagem e hidratação para sua barba.</p>
+                                <div class="price">R$ 35,00</div>
+                            </div>
+                        </div>
+                        
+                        <div class="service-card">
+                            <div class="service-img" style="background-image: url('./images/combo.jpg')"></div>
+                            <div class="service-info">
+                                <h3>Combo Corte + Barba</h3>
+                                <p>A experiência completa para você.</p>
+                                <div class="price">R$ 65,00</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Página de Agendamento -->
+        <div id="booking" class="page">
+            <section>
+                <div class="container">
+                    <h2>Agende seu Horário</h2>
+                    <div class="booking-container">
+                        <div class="booking-form">
+                            <div class="form-group">
+                                <label for="name">Nome Completo</label>
+                                <input type="text" id="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Telefone</label>
+                                <input type="tel" id="phone" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-mail</label>
+                                <input type="email" id="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="service">Serviço</label>
+                                <select id="service" required>
+                                    <option value="">Selecione um serviço</option>
+                                    <option value="Corte Tradicional">Corte Tradicional - R$ 40,00</option>
+                                    <option value="Barba Completa">Barba Completa - R$ 35,00</option>
+                                    <option value="Combo Corte + Barba">Combo Corte + Barba - R$ 65,00</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="date">Data</label>
+                                <input type="date" id="date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="time">Horário</label>
+                                <select id="time" required>
+                                    <option value="">Selecione um horário</option>
+                                    <option value="09:00">09:00</option>
+                                    <option value="10:00">10:00</option>
+                                    <option value="11:00">11:00</option>
+                                    <option value="14:00">14:00</option>
+                                    <option value="15:00">15:00</option>
+                                    <option value="16:00">16:00</option>
+                                    <option value="17:00">17:00</option>
+                                </select>
+                            </div>
+                            <button class="btn" onclick="bookAppointment()">Agendar</button>
+                            <div class="success-message" id="booking-success">Agendamento realizado com sucesso!</div>
+                            <div class="error-message" id="booking-error">Por favor, preencha todos os campos.</div>
+                        </div>
+                        <div class="booking-info">
+                            <h3>Informações de Agendamento</h3>
+                            <p>Agende seu horário de forma rápida e simples. Basta preencher o formulário com seus dados e escolher a data e hora desejadas.</p>
+                            <ul>
+                                <li>Confirmação imediata</li>
+                                <li>Cancelamento gratuito até 2 horas antes</li>
+                                <li>Profissionais experientes</li>
+                                <li>Ambiente confortável e higiênico</li>
+                            </ul>
+                            <p>Horário de funcionamento:</p>
+                            <p>Segunda a Sábado: 9h às 19h</p>
+                            <p>Domingo: Fechado</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Página de Login do Barbeiro -->
+        <div id="barber" class="page">
+            <section>
+                <div class="container">
+                    <h2>Área do Barbeiro</h2>
+                    <div id="login-area" class="login-container">
+                        <div class="form-group">
+                            <label for="barber-username">Usuário</label>
+                            <input type="text" id="barber-username">
+                        </div>
+                        <div class="form-group">
+                            <label for="barber-password">Senha</label>
+                            <input type="password" id="barber-password">
+                        </div>
+                        <button class="btn" onclick="loginBarber()">Entrar</button>
+                        <div class="error-message" id="login-error">Usuário ou senha incorretos.</div>
+                    </div>
+
+                    <div id="barber-panel" style="display: none;">
+                        <h3>Agenda de Hoje</h3>
+                        <div id="appointments-list" class="appointments-list">
+                            <!-- Agendamentos serão exibidos aqui -->
+                        </div>
+                        <button class="btn" style="margin-top: 20px;" onclick="logoutBarber()">Sair</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- Modal de confirmação -->
+        <div id="confirmation-modal" class="modal">
+            <div class="modal-content">
+                <h3>Confirmar Agendamento</h3>
+                <p>Você deseja confirmar o agendamento para:</p>
+                <p id="confirmation-details"></p>
+                <div class="modal-buttons">
+                    <button class="btn" onclick="confirmBooking()">Confirmar</button>
+                    <button class="btn" style="background-color: #f44336;" onclick="closeModal()">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-section">
+                        <h3>Sobre Nós</h3>
+                        <p>Somos especialistas em barbearia tradicional com toques modernos, oferecendo serviços de alta qualidade.</p>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>Contato</h3>
+                        <p>📱 11 97763-7943</p>
+                        <p>✉️ Maciel'sbarberstudio@gmail.com</p>
+                        <p>📍 Rua nossa senhora das candeias, 733 - São Paulo</p>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>Links Rápidos</h3>
+                        <a href="#" onclick="showPage('home')">Início</a>
+                        <a href="#" onclick="showPage('booking')">Agendar</a>
+                        <a href="#" onclick="showPage('barber')">Área do Barbeiro</a>
+                    </div>
+                    
+                    <div class="footer-section">
+                        <h3>Horário</h3>
+                        <p>Segunda a Sexta: 9h às 19h</p>
+                        <p>Sábado: 9h às 18h</p>
+                        <p>Domingo: Fechado</p>
+                    </div>
+                </div>
+                
+                <div class="footer-bottom">
+                    <p>&copy; 2025 BarberShop - Todos os direitos reservados</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // Função para mostrar/esconder páginas
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById(pageId).classList.add('active');
+        }
+
+        // Verificar token ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar data mínima para o agendamento (hoje)
+            const dateInput = document.getElementById('date');
+            if (dateInput) {
+                const today = new Date();
+                const yyyy = today.getFullYear();
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const dd = String(today.getDate()).padStart(2, '0');
+                dateInput.min = `${yyyy}-${mm}-${dd}`;
+            }
+            
+            // Verificar se existe token salvo
+            const token = localStorage.getItem('barberToken');
+            if (token) {
+                // Se tem token, mostrar painel do barbeiro
+                document.getElementById('login-area').style.display = 'none';
+                document.getElementById('barber-panel').style.display = 'block';
+                loadAppointments();
+            }
+        });
+
+        // Função de agendamento
+        function bookAppointment() {
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const email = document.getElementById('email').value;
+            const service = document.getElementById('service').value;
+            const date = document.getElementById('date').value;
+            const time = document.getElementById('time').value;
+            
+            const errorMessage = document.getElementById('booking-error');
+            const successMessage = document.getElementById('booking-success');
+            
+            // Validar campos
+            if (!name || !phone || !email || !service || !date || !time) {
+                errorMessage.textContent = 'Por favor, preencha todos os campos.';
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                return;
+            }
+            
+            // Verificar disponibilidade do horário
+            fetch(`/api/check-availability?date=${date}&time=${time}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.available) {
+                        errorMessage.textContent = 'Este horário já está ocupado. Por favor, escolha outro.';
+                        errorMessage.style.display = 'block';
+                        successMessage.style.display = 'none';
+                        return;
+                    }
+                    
+                    // Mostrar modal de confirmação
+                    const modal = document.getElementById('confirmation-modal');
+                    const detailsElement = document.getElementById('confirmation-details');
+                    detailsElement.innerHTML = `
+                        <strong>Serviço:</strong> ${service}<br>
+                        <strong>Data:</strong> ${formatDate(date)}<br>
+                        <strong>Horário:</strong> ${time}
+                    `;
+                    
+                    // Armazenar dados temporariamente
+                    window.tempBooking = {
+                        name, phone, email, service, date, time
+                    };
+                    
+                    modal.classList.add('active');
+                })
+                .catch(error => {
+                    console.error('Erro ao verificar disponibilidade:', error);
+                    errorMessage.textContent = 'Erro ao verificar disponibilidade. Tente novamente.';
+                    errorMessage.style.display = 'block';
+                });
+        }
+        
+        // Confirmar agendamento
+        function confirmBooking() {
+            const booking = window.tempBooking;
+            
+            if (!booking) {
+                alert("Erro: Nenhum agendamento foi encontrado para confirmar.");
+                return;
+            }
+            
+            fetch('/api/appointments', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(booking)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.error) });
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Limpar formulário e mostrar mensagem de sucesso
+                document.getElementById('name').value = '';
+                document.getElementById('phone').value = '';
+                document.getElementById('email').value = '';
+                document.getElementById('service').value = '';
+                document.getElementById('date').value = '';
+                document.getElementById('time').value = '';
+                
+                document.getElementById('booking-error').style.display = 'none';
+                document.getElementById('booking-success').style.display = 'block';
+                
+                closeModal();
+            })
+            .catch(error => {
+                console.error('Erro ao agendar:', error);
+                document.getElementById('booking-error').textContent = error.message || 'Erro ao salvar. Tente novamente.';
+                document.getElementById('booking-error').style.display = 'block';
+                closeModal();
+            });
+        }
+        
+        // Fechar modal
+        function closeModal() {
+            const modal = document.getElementById('confirmation-modal');
+            modal.classList.remove('active');
+            window.tempBooking = null;
+        }
+        
+        // Login do barbeiro
+        function loginBarber() {
+            const username = document.getElementById('barber-username').value;
+            const password = document.getElementById('barber-password').value;
+            const errorMessage = document.getElementById('login-error');
+            
+            fetch('/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ username, password })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.error) });
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Guardar token no localStorage
+                localStorage.setItem('barberToken', data.token);
+                localStorage.setItem('barberName', data.name);
+                
+                // Mostrar painel do barbeiro
+                document.getElementById('login-area').style.display = 'none';
+                document.getElementById('barber-panel').style.display = 'block';
+                errorMessage.style.display = 'none';
+                
+                // Carregar agendamentos
+                loadAppointments();
+            })
+            .catch(error => {
+                console.error('Erro de login:', error);
+                errorMessage.textContent = error.message || 'Usuário ou senha incorretos.';
+                errorMessage.style.display = 'block';
+            });
+        }
+        
+        // Logout do barbeiro
+        function logoutBarber() {
+            // Remover token
+            localStorage.removeItem('barberToken');
+            localStorage.removeItem('barberName');
+            
+            // Mostrar tela de login
+            document.getElementById('login-area').style.display = 'block';
+            document.getElementById('barber-panel').style.display = 'none';
+            document.getElementById('barber-username').value = '';
+            document.getElementById('barber-password').value = '';
+        }
+        
+        // Carregar agendamentos
+        function loadAppointments() {
+            const token = localStorage.getItem('barberToken');
+            const appointmentsList = document.getElementById('appointments-list');
+            
+            if (!token) {
+                logoutBarber();
+                return;
+            }
+            
+            appointmentsList.innerHTML = '<div class="appointment-item">Carregando agendamentos...</div>';
+            
+            fetch('/api/appointments', {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 401 || response.status === 403) {
+                        throw new Error('Sessão expirada. Faça login novamente.');
+                    }
+                    throw new Error('Erro ao carregar agendamentos');
+                }
+                return response.json();
+            })
+            .then(appointments => {
+                appointmentsList.innerHTML = '';
+                
+                if (appointments.length === 0) {
+                    appointmentsList.innerHTML = '<div class="appointment-item">Nenhum agendamento encontrado.</div>';
+                    return;
+                }
+                
+                appointments.forEach(app => {
+                    const appointmentItem = document.createElement('div');
+                    appointmentItem.className = 'appointment-item';
+                    appointmentItem.innerHTML = `
+                        <div class="appointment-info">
+                            <strong>${app.name}</strong> - ${app.phone}<br>
+                            <strong>Serviço:</strong> ${app.service}<br>
+                            <strong>Data:</strong> ${formatDate(app.date)} às ${app.time.substring(0, 5)}
+                        </div>
+                        <div class="appointment-actions">
+                            <button onclick="cancelAppointment(${app.id})">Cancelar</button>
+                        </div>
+                    `;
+                    appointmentsList.appendChild(appointmentItem);
+                });
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                
+                if (error.message === 'Sessão expirada. Faça login novamente.') {
+                    logoutBarber();
+                    alert('Sessão expirada. Faça login novamente.');
+                } else {
+                    appointmentsList.innerHTML = `<div class="appointment-item">Erro ao carregar agendamentos: ${error.message}</div>`;
+                }
+            });
+        }
+        
+        // Cancelar agendamento
+        function cancelAppointment(id) {
+            const token = localStorage.getItem('barberToken');
+            
+            if (!token) {
+                logoutBarber();
+                return;
+            }
+            
+            if (confirm('Tem certeza que deseja cancelar este agendamento?')) {
+                fetch(`/api/appointments/${id}/cancel`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        if (response.status === 401 || response.status === 403) {
+                            throw new Error('Sessão expirada. Faça login novamente.');
+                        }
+                        throw new Error('Erro ao cancelar agendamento');
+                    }
+                    return response.json();
+                })
+                .then(() => {
+                    loadAppointments();
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                    
+                    if (error.message === 'Sessão expirada. Faça login novamente.') {
+                        logoutBarber();
+                        alert('Sessão expirada. Faça login novamente.');
+                    } else {
+                        alert(`Erro ao cancelar: ${error.message}`);
+                    }
+                });
+            }
+        }
+        
+        // Formatar data
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const day = String(date.getDate()).padStart(2, '0');
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+    </script>
+    
+    <style>
+        :root {
+            --primary: #1d1d1d;
+            --secondary: #c19b76;
+            --light: #f5f5f5;
+            --dark: #333;
+        }
+
+        body {
+            background-color: var(--light);
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Cabeçalho */
+        header {
+            background-color: var(--primary);
+            color: white;
+            padding: 20px 0;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--secondary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--secondary);
+        }
+
+        /* Seções */
+        section {
+            padding: 50px 0;
+        }
+
+        h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--primary);
+            text-align: center;
+        }
+
+        /* Hero */
+        .hero {
+            background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('./images/hero-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #a67f5c;
+        }
+
+        /* Serviços */
+        .services {
+            padding: 80px 0;
+            background-color: var(--light);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .service-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .service-img {
+            height: 250px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .service-img::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50%;
+            background: linear-gradient(to top, rgba(0,0,0,0.5), transparent);
+        }
+
+        .service-info {
+            padding: 25px;
+        }
+
+        .service-info h3 {
+            color: var(--primary);
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .service-info p {
+            color: var(--dark);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .price {
+            color: var(--secondary);
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        /* Agendamento */
+        .booking-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .booking-form {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .booking-info {
+            background-color: var(--primary);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+        }
+
+        .booking-info h3 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        .booking-info p {
+            margin-bottom: 15px;
+        }
+
+        .booking-info ul {
+            list-style-type: none;
+            margin-bottom: 20px;
+        }
+
+        .booking-info ul li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+
+        .booking-info ul li:before {
+            content: "✓";
+            color: var(--secondary);
+            margin-right: 10px;
+        }
+
+        /* Login barbeiro */
+        .login-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Painel do barbeiro */
+        .appointments-list {
+            margin-top: 30px;
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .appointment-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .appointment-item:last-child {
+            border-bottom: none;
+        }
+
+        .appointment-info {
+            flex: 1;
+        }
+
+        .appointment-actions button {
+            background-color: #f44336;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--primary);
+            color: white;
+            padding: 40px 0 20px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h3 {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #aaa;
+            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
+        }
+
+        .footer-section a:hover {
+            color: var(--secondary);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+            color: #aaa;
+        }
+
+        /* Páginas */
+        .main-content {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+            flex: 1;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .booking-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Modal de confirmação */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .modal h3 {
+            margin-bottom: 20px;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .success-message {
+            color: green;
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .error-message {
+            color: red;
+            margin-top: 20px;
+            display: none;
+        }
+    </style>
+</body>
+</html>
